@@ -675,16 +675,6 @@ export class WebhookService {
 					value: `\`!title ${selectedLobby.tournament.name} - ${selectedLobby.selectedStage.name}: ${selectedLobby.teamOneName} vs ${selectedLobby.teamTwoName}\``
 				});
 
-			if (streamerList != null && streamerList.length > 0) {
-				const streamers = streamerList.length == 1 ? streamerList[0] : streamerList.join(' and ');
-
-				body.embeds[0].fields.push(
-					{
-						name: 'Twitch streamer command',
-						value: `\`!editcom !streamer Streaming this match is ${streamers}\``
-					});
-			}
-
 			if (commentatorList != null && commentatorList.length > 0) {
 				const casters = commentatorList.length == 1 ? commentatorList[0] : commentatorList.join(' and ');
 
@@ -693,6 +683,31 @@ export class WebhookService {
 						name: 'Twitch casters command',
 						value: `\`!editcom !casters Casting this match is ${casters}\``
 					});
+			}
+
+			if (streamerList != null && streamerList.length > 0) {
+				const streamers = streamerList.length == 1 ? streamerList[0] : streamerList.join(' and ');
+
+				if (streamerList.length == 1) {
+					body.embeds[0].fields.push(
+						{
+							name: 'osu! streamer addref',
+							value: `\`!mp addref ${streamerList[0]}\``
+						});
+				}
+				else {
+					let streamerAddref = '';
+
+					for (const streamer of streamerList) {
+						streamerAddref += `\`!editcom !streamer Streaming this match is ${streamer}\`\n`;
+					}
+
+					body.embeds[0].fields.push(
+						{
+							name: 'osu! streamer addref',
+							value: streamerAddref
+						});
+				}
 			}
 		}
 
